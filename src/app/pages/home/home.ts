@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-home',
   imports: [MovieCard, CommonModule],
   templateUrl: './home.html',
-  styleUrl: './home.css',
+styleUrls: ['./home.css']
 })
 export class Home implements OnInit {
   //private movieService = Inject(MovieService);

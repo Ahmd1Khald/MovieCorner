@@ -1,0 +1,161 @@
+<!-- ✅ حالة التحميل: لما البيانات لسه بتيجي من الـ API -->
+<div *ngIf="isLoading" class="loading-container">
+  <div class="loading-spinner"></div>
+  <p class="loading-text">Loading movie details...</p>
+</div>
+
+<!-- ✅ عرض بيانات الفيلم لما تجهز -->
+<div *ngIf="!isLoading && movie" class="movie-details-wrapper">
+
+  <!-- 🎬 جزء الخلفية الكبيرة (Hero) -->
+  <div class="hero-section" [style.background-image]="'url(https://image.tmdb.org/t/p/original' + movie.backdrop_path + ')'">
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <!-- 🎞 صورة البوستر -->
+      <div class="movie-poster">
+        <img [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path"
+             [alt]="movie.title"
+             class="poster-image" />
+        <div class="poster-shadow"></div>
+      </div>
+
+      <!-- 📄 معلومات الفيلم الأساسية -->
+      <div class="movie-info">
+        <h1 class="movie-title">{{ movie.title }}</h1>
+        <!-- لو فيه tagline (جملة تسويقية للفيلم) بنعرضها -->
+        <p class="movie-tagline" *ngIf="movie.tagline">{{ movie.tagline }}</p>
+
+        <!-- 🗓 بيانات تاريخ الإصدار والتقييم والمدة -->
+        <div class="movie-meta">
+          <div class="meta-item">
+            <i class="icon-calendar"></i>
+            <span class="meta-label">Release Date</span>
+            <span class="meta-value">{{ movie.release_date | date:'MMM dd, yyyy' }}</span>
+          </div>
+
+          <div class="meta-item">
+            <i class="icon-star"></i>
+            <span class="meta-label">Rating</span>
+            <span class="meta-value rating-score">{{ movie.vote_average | number:'1.1-1' }}/10</span>
+            <span class="vote-count">({{ movie.vote_count | number }} votes)</span>
+          </div>
+
+          <div class="meta-item" *ngIf="movie.runtime">
+            <i class="icon-clock"></i>
+            <span class="meta-label">Runtime</span>
+            <span class="meta-value">{{ movie.runtime }} min</span>
+          </div>
+        </div>
+
+        <!-- ⭐ شكل النجوم بناءً على التقييم -->
+        <div class="rating-stars">
+          <div class="stars-container">
+            <!-- هنا بعرض نسبة النجوم حسب قيمة التقييم -->
+            <div class="stars-filled" [style.width.%]="(movie.vote_average / 10) * 100"></div>
+          </div>
+          <span class="rating-text">{{ movie.vote_average | number:'1.1-1' }}</span>
+        </div>
+
+        <!-- 🎭 عرض الأنواع (Genres) -->
+        <div class="genres" *ngIf="movie.genres">
+          <span class="genre-tag" *ngFor="let genre of movie.genres">{{ genre.name }}</span>
+        </div>
+
+        <!-- 🎬 أزرار أكشن (مثلاً: عرض التريلر - الإضافة للمفضلة) -->
+        <div class="action-buttons">
+          <button class="btn btn-primary">
+            <i class="icon-play"></i>
+            Watch Trailer
+          </button>
+          <button class="btn btn-secondary">
+            <i class="icon-bookmark"></i>
+            Add to Watchlist
+          </button>
+          <button class="btn btn-outline">
+            <i class="icon-share"></i>
+            Share
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 📄 تفاصيل المحتوى (تحت البوستر) -->
+  <div class="content-section">
+    <div class="container">
+
+      <!-- 📃 ملخص الفيلم -->
+      <div class="overview-section">
+        <h2 class="section-title">Overview</h2>
+        <p class="overview-text">{{ movie.overview }}</p>
+      </div>
+
+      <!-- 💰📈 إحصائيات الفيلم -->
+      <div class="stats-grid">
+        <!-- لو فيه ميزانية -->
+        <div class="stat-card" *ngIf="movie.budget && movie.budget > 0">
+          <div class="stat-icon">💰</div>
+          <div class="stat-label">Budget</div>
+          <div class="stat-value">${{ movie.budget | number }}</div>
+        </div>
+
+        <!-- لو فيه إيرادات -->
+        <div class="stat-card" *ngIf="movie.revenue && movie.revenue > 0">
+          <div class="stat-icon">📈</div>
+          <div class="stat-label">Revenue</div>
+          <div class="stat-value">${{ movie.revenue | number }}</div>
+        </div>
+
+        <!-- نسبة الشعبية -->
+        <div class="stat-card">
+          <div class="stat-icon">🌟</div>
+          <div class="stat-label">Popularity</div>
+          <div class="stat-value">{{ movie.popularity | number:'1.0-0' }}</div>
+        </div>
+
+        <!-- اللغة الأصلية -->
+        <div class="stat-card" *ngIf="movie.original_language">
+          <div class="stat-icon">🌍</div>
+          <div class="stat-label">Language</div>
+          <div class="stat-value">{{ movie.original_language | uppercase }}</div>
+        </div>
+      </div>
+
+      <!-- 🏭 معلومات إضافية عن الإنتاج -->
+      <div class="additional-info">
+        <!-- شركات الإنتاج -->
+        <div class="info-row" *ngIf="movie.production_companies && movie.production_companies.length > 0">
+          <strong>Production Companies:</strong>
+          <span *ngFor="let company of movie.production_companies; let last = last">
+            {{ company.name }}<span *ngIf="!last">, </span>
+          </span>
+        </div>
+
+        <!-- دول الإنتاج -->
+        <div class="info-row" *ngIf="movie.production_countries && movie.production_countries.length > 0">
+          <strong>Production Countries:</strong>
+          <span *ngFor="let country of movie.production_countries; let last = last">
+            {{ country.name }}<span *ngIf="!last">, </span>
+          </span>
+        </div>
+
+        <!-- اسم الفيلم الأصلي (لو مختلف عن المعروض) -->
+        <div class="info-row" *ngIf="movie.original_title !== movie.title">
+          <strong>Original Title:</strong>
+          {{ movie.original_title }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ❌ حالة الخطأ: لو الفيلم مش موجود أو الـ id غلط -->
+<div *ngIf="!isLoading && !movie" class="error-container">
+  <div class="error-content">
+    <i class="error-icon">⚠️</i>
+    <h2>Movie Not Found</h2>
+    <p>Sorry, we couldn't find the movie you're looking for.</p>
+    <button class="btn btn-primary">Go Back</button>
+  </div>
+</div>
