@@ -1,0 +1,26 @@
+<div class="container">
+  <h2 class="mb-4 text-center">nowPlaying</h2>
+
+  <div *ngIf="isLoading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+
+  <div class="row">
+    <div *ngFor="let movie of movies" class="col-md-3 mb-4">
+      <app-movie-card [movie]="movie"> </app-movie-card>
+    </div>
+  </div>
+
+  <!-- Pagination Buttons -->
+  <div class="d-flex justify-content-center gap-3 mt-4">
+    <button
+      class="btn btn-outline-primary"
+      (click)="prevPage()"
+      [disabled]="page === 1"
+    >
+      previous
+    </button>
+    <span class="align-self-center"> page {{ page }} </span>
+    <button class="btn btn-outline-primary" (click)="nextPage()">next</button>
+  </div>
+</div>
