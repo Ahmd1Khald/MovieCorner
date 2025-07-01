@@ -8,15 +8,14 @@
 <div *ngIf="!isLoading && movie" class="movie-details-wrapper">
 
   <!-- 🎬 جزء الخلفية الكبيرة (Hero) -->
-  <div class="hero-section" [style.background-image]="'url(https://image.tmdb.org/t/p/original' + movie.backdrop_path + ')'">
+  <div class="hero-section"
+    [style.background-image]="'url(https://image.tmdb.org/t/p/original' + movie.backdrop_path + ')'">
     <div class="hero-overlay"></div>
 
     <div class="hero-content">
       <!-- 🎞 صورة البوستر -->
       <div class="movie-poster">
-        <img [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path"
-             [alt]="movie.title"
-             class="poster-image" />
+        <img [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" [alt]="movie.title" class="poster-image" />
         <div class="poster-shadow"></div>
       </div>
 
@@ -68,9 +67,9 @@
             <i class="icon-play"></i>
             Watch Trailer
           </button>
-          <button class="btn btn-secondary">
+          <button class="btn" [ngClass]="isFavorite ? 'btn-success' : 'btn-secondary'" (click)="addToFavorites()">
             <i class="icon-bookmark"></i>
-            Add to Watchlist
+            {{ isFavorite ? 'In Favorites' : 'Add to Favorites' }}
           </button>
           <button class="btn btn-outline">
             <i class="icon-share"></i>
