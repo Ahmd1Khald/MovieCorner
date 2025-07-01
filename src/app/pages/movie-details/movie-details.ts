@@ -14,7 +14,7 @@ import { RouterModule } from '@angular/router';
 export class MovieDetailsComponent implements OnInit {
   movie: any;
   isLoading: boolean = true;
-  isFavorite: boolean = false; // ✅ عرفناها هنا
+  isFavorite: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,7 +30,7 @@ export class MovieDetailsComponent implements OnInit {
         console.log('Movie details from API:', data);
         this.movie = data;
         this.isLoading = false;
-        this.checkIfFavorite(); // ✅ هنا نتحقق بعد ما نحمل الفيلم
+        this.checkIfFavorite();
       },
       error: (err) => {
         console.error('Error fetching movie details:', err);
@@ -39,14 +39,12 @@ export class MovieDetailsComponent implements OnInit {
     });
   }
 
-  // ✅ دالة التحقق إذا الفيلم موجود في المفضلة
   checkIfFavorite(): void {
     const stored = localStorage.getItem('favoriteMovies');
     const favorites = stored ? JSON.parse(stored) : [];
     this.isFavorite = favorites.some((fav: any) => fav.id === this.movie.id);
   }
 
-  // ✅ دالة الإضافة للمفضلة
   addToFavorites(): void {
     const stored = localStorage.getItem('favoriteMovies');
     let favorites = stored ? JSON.parse(stored) : [];
