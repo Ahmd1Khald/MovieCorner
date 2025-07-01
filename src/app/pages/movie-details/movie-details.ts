@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MovieService } from '../../core/services/wishlist';
+import { MovieService } from '../../core/services/movie-service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
