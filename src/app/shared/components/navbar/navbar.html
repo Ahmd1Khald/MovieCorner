@@ -1,24 +1,22 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 fixed-top shadow">
-<a class="navbar-brand fw-bold text-white" routerLink="/">🎬 MovieCorner</a>
+  <a class="navbar-brand fw-bold text-white" routerLink="/">🎬 MovieCorner</a>
 
   <form class="d-flex mx-auto w-50">
-    <input
-      #searchInput
-      class="form-control me-2"
-      type="search"
-placeholder="Search..."
-      aria-label="Search" />
+    <input #searchInput class="form-control me-2" type="search" placeholder="Search..." aria-label="Search" />
     <button class="btn btn-outline-light" type="submit">🔍</button>
   </form>
 
-<div class="ms-auto d-flex align-items-center gap-3">
-    <a class="nav-link text-white position-relative me-3" routerLink="/wishlist">
-      <i class="fa fa-heart text-danger"></i>
-      <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">
-      0
-      </span>
-        <span class="ms-1">Wishlist</span>
+  <div class="ms-auto d-flex align-items-center gap-3">
 
+
+    <!-- زرار الفيفوريتس -->
+    <a class="nav-link text-white position-relative me-3" routerLink="/favorites">
+      <i class="text-danger"></i>
+      <span class="badge bg-danger rounded-circle position-absolute top-0 start-100 translate-middle"
+        style="font-size: 0.65rem; min-width: 1.3rem; height: 1.3rem; display: flex; align-items: center; justify-content: center;">
+        {{ wishlistCount }}
+      </span>
+      <span class="ms-1">Wishlist</span>
     </a>
   </div>
 </nav>

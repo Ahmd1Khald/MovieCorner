@@ -1,41 +1,66 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router'; // عشان أقدر أجيب الـ id اللي جاي من الـ URL
-import { MovieService } from '../../core/services/movie-service'; // السيرفز اللي فيها كل شغل الأفلام
+import { ActivatedRoute } from '@angular/router';
+import { MovieService } from '../../core/services/wishlist';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-movie-details',
-  standalone: true, // الكومبوننت دي مستقلة (standalone component)
-  imports: [CommonModule ,RouterModule], // محتاج أستورد دول عشان أشتغل براحتى في الـ HTML
-  templateUrl: './movie-details.html', // ملف الـ HTML الخاص بالتفاصيل
-  styleUrls: ['./movie-details.css'] // التنسيقات بتاعت صفحة التفاصيل
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  templateUrl: './movie-details.html',
+  styleUrls: ['./movie-details.css'],
 })
 export class MovieDetailsComponent implements OnInit {
-  movie: any; // هنا هخزن بيانات الفيلم اللي جاي من الـ API
-  isLoading: boolean = true; // دي عشان أتحكم في عرض لودر أثناء جلب البيانات
+  movie: any;
+  isLoading: boolean = true;
+  isFavorite: boolean = false; // ✅ عرفناها هنا
 
   constructor(
-    private route: ActivatedRoute, // بستخدمه عشان أقرأ الـ id من الـ URL
-    private movieService: MovieService // ده السيرفز اللي هجيب منه بيانات الفيلم
+    private route: ActivatedRoute,
+    private movieService: MovieService
   ) {}
 
   ngOnInit(): void {
-    // أول ما الكمبوننت تشتغل، بقرأ الـ id من الـ URL
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    console.log('Movie ID from route:', id); // بس بطبع الـ id في الكونسول للتأكيد
+    console.log('Movie ID from route:', id);
 
-    // بنادي الدالة اللي بتجيب تفاصيل الفيلم من السيرفز
     this.movieService.getMovieDetails(id).subscribe({
       next: (data) => {
-        console.log('Movie details from API:', data); // بطبع البيانات في الكونسول أشوفها جاية صح ولا لأ
-        this.movie = data; // بخزن البيانات في المتغير اللي فوق
-        this.isLoading = false; // بقفل اللودر خلاص البيانات وصلت
+        console.log('Movie details from API:', data);
+        this.movie = data;
+        this.isLoading = false;
+        this.checkIfFavorite(); // ✅ هنا نتحقق بعد ما نحمل الفيلم
       },
       error: (err) => {
-        console.error('Error fetching movie details:', err); // لو حصل أي خطأ بطبعه عشان أعرف إيه اللي حصل
-        this.isLoading = false; // بقفل اللودر حتى لو في خطأ
-      }
+        console.error('Error fetching movie details:', err);
+        this.isLoading = false;
+      },
     });
+  }
+
+  // ✅ دالة التحقق إذا الفيلم موجود في المفضلة
+  checkIfFavorite(): void {
+    const stored = localStorage.getItem('favoriteMovies');
+    const favorites = stored ? JSON.parse(stored) : [];
+    this.isFavorite = favorites.some((fav: any) => fav.id === this.movie.id);
+  }
+
+  // ✅ دالة الإضافة للمفضلة
+  addToFavorites(): void {
+    const stored = localStorage.getItem('favoriteMovies');
+    let favorites = stored ? JSON.parse(stored) : [];
+
+    const alreadyExists = favorites.some(
+      (fav: any) => fav.id === this.movie.id
+    );
+    if (!alreadyExists) {
+      favorites.push(this.movie);
+      localStorage.setItem('favoriteMovies', JSON.stringify(favorites));
+      this.isFavorite = true;
+      alert('Added to favorites!');
+    } else {
+      alert('This movie is already in favorites!');
+    }
   }
 }
