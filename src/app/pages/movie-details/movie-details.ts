@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MovieService } from '../../core/services/movie-service';
-import { WishlistService } from '../../core/services/wishlist';
+import { WishlistService } from '../../core/services/wishlist'; // ✅ خليك محتفظ بيها
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -14,7 +14,7 @@ import { RouterModule } from '@angular/router';
 })
 export class MovieDetailsComponent implements OnInit {
   movie: any;
-  isLoading = true;
+  isLoading = true; // ✅ خليك على تنسيق برانش جو
   isFavorite = false;
 
   constructor(
@@ -45,6 +45,6 @@ export class MovieDetailsComponent implements OnInit {
 
   toggleFavorite(): void {
     this.wishlistService.toggle(this.movie);
-    this.isFavorite = this.wishlistService.isInWishlist(this.movie.id); // عشان تحدث شكل القلب
+    this.isFavorite = this.wishlistService.isInWishlist(this.movie.id); // ✅ تحديث شكل القلب
   }
 }
