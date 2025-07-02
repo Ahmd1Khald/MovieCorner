@@ -131,3 +131,62 @@
     <button class="btn btn-primary">Go Back</button>
   </div>
 </div>
+
+
+
+<!-- Recommendations Section - Add this before the closing div of movie-details-wrapper -->
+<div class="recommendations-section">
+  <div class="container">
+    <h2 class="section-title">Recommended Movies</h2>
+    
+    <!-- Loading State for Recommendations -->
+    <div *ngIf="isLoadingRecommendations" class="recommendations-loading">
+      <div class="loading-spinner-small"></div>
+      <p class="loading-text-small">Loading recommendations...</p>
+    </div>
+
+    <!-- Recommendations Grid -->
+    <div *ngIf="!isLoadingRecommendations && recommendations.length > 0" class="recommendations-grid">
+      <div 
+        *ngFor="let movie of recommendations.slice(0, 8)" 
+        class="recommendation-card"
+        (click)="navigateToMovie(movie.id)"
+      >
+        <div class="recommendation-poster">
+          <img 
+            [src]="movie.poster_path ? 'https://image.tmdb.org/t/p/w300' + movie.poster_path : 'https://via.placeholder.com/300x450/1a1a1a/666?text=No+Image'" 
+            [alt]="movie.title" 
+            class="recommendation-image"
+          />
+          <div class="recommendation-overlay">
+            <div class="overlay-content">
+              <div class="rating-badge">
+                <span class="rating-star">⭐</span>
+                <span class="rating-value">{{ movie.vote_average | number:'1.1-1' }}</span>
+              </div>
+              <button 
+                class="btn-favorite-small"
+                (click)="addRecommendationToFavorites(movie); $event.stopPropagation()"
+              >
+                <span class="heart-icon">♡</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="recommendation-info">
+          <h3 class="recommendation-title">{{ movie.title }}</h3>
+          <p class="recommendation-date">{{ movie.release_date | date:'yyyy' }}</p>
+          <p class="recommendation-overview">{{ movie.overview | slice:0:100 }}{{ movie.overview.length > 100 ? '...' : '' }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Recommendations Message -->
+    <div *ngIf="!isLoadingRecommendations && recommendations.length === 0" class="no-recommendations">
+      <div class="no-recommendations-icon">🎬</div>
+      <h3>No Recommendations Available</h3>
+      <p>We couldn't find any similar movies at the moment.</p>
+    </div>
+  </div>
+</div>

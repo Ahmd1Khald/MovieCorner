@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MovieService } from '../../core/services/movie-service';
-import { WishlistService } from '../../core/services/wishlist'; // ✅ خليك محتفظ بيها
+import { WishlistService } from '../../core/services/wishlist';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -14,8 +14,13 @@ import { RouterModule } from '@angular/router';
 })
 export class MovieDetailsComponent implements OnInit {
   movie: any;
-  isLoading = true; // ✅ خليك على تنسيق برانش جو
-  isFavorite = false;
+  isLoading: boolean = true;
+  isFavorite: boolean = false;
+  movieId: number = 0;
+
+  // توصيات الفيلم
+  recommendations: any[] = [];
+  isLoadingRecommendations: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -24,9 +29,13 @@ export class MovieDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.movieId = Number(this.route.snapshot.paramMap.get('id'));
+    this.loadMovieDetails();
+    this.loadRecommendations();
+  }
 
-    this.movieService.getMovieDetails(id).subscribe({
+  loadMovieDetails(): void {
+    this.movieService.getMovieDetails(this.movieId).subscribe({
       next: (data) => {
         this.movie = data;
         this.isLoading = false;
@@ -39,12 +48,44 @@ export class MovieDetailsComponent implements OnInit {
     });
   }
 
+  loadRecommendations(): void {
+    this.isLoadingRecommendations = true;
+    this.movieService.getRecommendations(this.movieId).subscribe({
+      next: (data) => {
+        this.recommendations = data.results || [];
+        this.isLoadingRecommendations = false;
+      },
+      error: (err) => {
+        console.error('Error fetching recommendations:', err);
+        this.isLoadingRecommendations = false;
+      },
+    });
+  }
+
   checkIfFavorite(): void {
     this.isFavorite = this.wishlistService.isInWishlist(this.movie.id);
   }
 
   toggleFavorite(): void {
     this.wishlistService.toggle(this.movie);
-    this.isFavorite = this.wishlistService.isInWishlist(this.movie.id); // ✅ تحديث شكل القلب
+    this.isFavorite = this.wishlistService.isInWishlist(this.movie.id);
+  }
+
+  addRecommendationToFavorites(movie: any): void {
+    const stored = localStorage.getItem('favoriteMovies');
+    let favorites = stored ? JSON.parse(stored) : [];
+
+    const alreadyExists = favorites.some((fav: any) => fav.id === movie.id);
+    if (!alreadyExists) {
+      favorites.push(movie);
+      localStorage.setItem('favoriteMovies', JSON.stringify(favorites));
+      alert('Added to favorites!');
+    } else {
+      alert('This movie is already in favorites!');
+    }
+  }
+
+  navigateToMovie(movieId: number): void {
+    window.location.href = `/movie/${movieId}`;
   }
 }
