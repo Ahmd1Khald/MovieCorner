@@ -1,0 +1,17 @@
+<!-- src/app/pages/register/register.html -->
+<div class="container mt-5">
+  <h2>Register</h2>
+  <div *ngIf="message" class="alert alert-info">{{ message }}</div>
+  <form (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label>Email</label>
+      <input type="email" [(ngModel)]="email" name="email" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label>Password</label>
+      <input type="password" [(ngModel)]="password" name="password" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+    <a routerLink="/login" class="btn btn-link">Already have an account? Login</a>
+  </form>
+</div>
