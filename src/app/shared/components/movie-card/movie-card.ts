@@ -1,7 +1,8 @@
+// ✅ movie-card.ts
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { WishlistService } from '../../../core/services/wishlist'; // ⬅️ استورد الخدمة
+import { WishlistService } from '../../../core/services/wishlist';
 
 @Component({
   selector: 'app-movie-card',
@@ -11,20 +12,24 @@ import { WishlistService } from '../../../core/services/wishlist'; // ⬅️ ا�
   styleUrl: './movie-card.css',
 })
 export class MovieCard {
-  constructor(private wishlistService: WishlistService) {} // ⬅️ استخدم الخدمة هنا
-
   @Input() movie: any;
+  @Output() removedFromWishlist = new EventEmitter<number>();
 
-  // ✅ check if movie is in wishlist
+  constructor(public wishlistService: WishlistService) {}
+
   isInWishlist(id: number): boolean {
     return this.wishlistService.isInWishlist(id);
   }
 
-  // ✅ toggle movie in wishlist
-  toggleWishlist(movie: any, event: Event): void {
-    event.stopPropagation(); // عشان مايفتحش صفحة التفاصيل
-    event.preventDefault(); // عشان مايتنقلش في اللينك
+  handleToggle(event: Event): void {
+    event.stopPropagation();
+    event.preventDefault();
 
-    this.wishlistService.toggle(movie); // ⬅️ استخدم الخدمة بدل الشغل اليدوي
+    const isCurrentlyInWishlist = this.isInWishlist(this.movie.id);
+    this.wishlistService.toggle(this.movie);
+
+    if (isCurrentlyInWishlist) {
+      this.removedFromWishlist.emit(this.movie.id);
+    }
   }
 }

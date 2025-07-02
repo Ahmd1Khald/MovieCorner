@@ -54,9 +54,8 @@
             <i class="icon-play"></i>
             Watch Trailer
           </button>
-          <button class="btn" [ngClass]="isFavorite ? 'btn-success' : 'btn-secondary'" (click)="addToFavorites()">
-            <i class="icon-bookmark"></i>
-            {{ isFavorite ? 'In Favorites' : 'Add to Favorites' }}
+          <button (click)="toggleFavorite()" class="btn btn-outline-danger bg-dark">
+            <i [ngClass]="isFavorite ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
           </button>
           <button class="btn btn-outline">
             <i class="icon-share"></i>
