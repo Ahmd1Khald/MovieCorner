@@ -581,7 +581,7 @@
 .recommendation-card:hover {
   transform: translateY(-10px) scale(1.02);
   border-color: rgba(102, 126, 234, 0.5);
-  box-shadow: 
+  box-shadow:
     0 20px 40px rgba(0, 0, 0, 0.4),
     0 0 0 1px rgba(102, 126, 234, 0.3);
 }
