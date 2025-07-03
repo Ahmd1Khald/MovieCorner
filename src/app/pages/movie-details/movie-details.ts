@@ -18,7 +18,7 @@ export class MovieDetailsComponent implements OnInit {
   isFavorite: boolean = false;
   movieId: number = 0;
 
-  // توصيات الفيلم
+  //   توصيات الفيلم
   recommendations: any[] = [];
   isLoadingRecommendations: boolean = false;
 
