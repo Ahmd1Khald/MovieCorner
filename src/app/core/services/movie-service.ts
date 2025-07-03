@@ -69,7 +69,7 @@ getMovieVideos(id: number): Observable<any> {
   return this.http.get(`${this.baseUrl}/movie/${id}/videos?api_key=${this.apiKey}`).pipe(
     map((res: any) => {
       const trailer = res.results.find((video: any) => video.type === 'Trailer' && video.site === 'YouTube');
-      return trailer || null; 
+      return trailer || null;
     })
   );
 }
