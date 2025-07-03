@@ -64,12 +64,11 @@
 
         </div>
 <div class="text-center">
-  <app-movie-videos
-    *ngIf="showTrailer"
-    [movieId]="movie.id"
-    class="video-wrapper"
-  ></app-movie-videos>
+  <div class="video-wrapper" *ngIf="showTrailer">
+    <app-movie-videos [movieId]="movie.id"></app-movie-videos>
+  </div>
 </div>
+
 
       </div>
     </div>
