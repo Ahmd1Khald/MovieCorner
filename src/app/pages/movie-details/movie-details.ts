@@ -16,12 +16,6 @@ import { MovieVideos } from '../../movie-videos/movie-videos'; // استيراد
 })
 export class MovieDetailsComponent implements OnInit, OnDestroy {
   movie: any;
-  isLoading = true;
-  isFavorite = false;
-  private langSub?: Subscription;
-  private transSub?: Subscription;
-  private detailsSub?: Subscription;
-  showTrailer = false;
   constructor(
     private route: ActivatedRoute,
     private movieService: MovieService,
@@ -29,21 +23,6 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.isLoading = true;
-
-    this.langSub = this.movieService.language$.subscribe(lang => {
-      this.loadMovieData(id, lang);
-    });
-  }
-
-  loadMovieData(id: number, lang: string) {
-    this.isLoading = true;
-
-    // أولاً نجيب تفاصيل الفيلم
-    if (this.detailsSub) this.detailsSub.unsubscribe();
-    this.detailsSub = this.movieService.getMovieDetails(id).subscribe({
-      next: data => {
         this.movie = data;
 
         // بعدها نجيب الترجمات
@@ -73,6 +52,20 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
       error: () => {
         this.isLoading = false;
       }
+    });
+  }
+
+  loadRecommendations(): void {
+    this.isLoadingRecommendations = true;
+    this.movieService.getRecommendations(this.movieId).subscribe({
+      next: (data) => {
+        this.recommendations = data.results || [];
+        this.isLoadingRecommendations = false;
+      },
+      error: (err) => {
+        console.error('Error fetching recommendations:', err);
+        this.isLoadingRecommendations = false;
+      },
     });
   }
 
