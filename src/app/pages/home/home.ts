@@ -19,6 +19,9 @@ export class Home implements OnInit {
   constructor(private movieService: MovieService) {}
   ngOnInit(): void {
     this.fetchNowPlaying();
+  this.movieService.language$.subscribe(() => {
+    this.fetchNowPlaying();
+  });
   }
   fetchNowPlaying(): void {
     this.isLoading = true;

@@ -16,5 +16,17 @@
       </span>
       <span class="ms-1">Wishlist</span>
     </a>
+
+
   </div>
+<select #langSelect (change)="onLanguageChange(langSelect.value)" [value]="currentLang">
+  <option value="en">English</option>
+  <option value="ar">العربية</option>
+  <option value="fr">Français</option>
+  <option value="zh">中文</option>
+</select>
+<div *ngFor="let movie of movies">
+  {{ movie.title }}
+</div>
+
 </nav>
