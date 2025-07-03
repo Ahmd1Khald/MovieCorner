@@ -3,11 +3,12 @@ import { MovieCard } from '../../shared/components/movie-card/movie-card';
 import { CommonModule } from '@angular/common';
 import { WishlistService } from '../../core/services/wishlist';
 import { MovieService } from '../../core/services/movie-service';
+import { Navbar } from '../../shared/components/navbar/navbar';
 
 @Component({
   selector: 'app-favorites',
   standalone: true,
-  imports: [MovieCard, CommonModule],
+  imports: [MovieCard, CommonModule,Navbar],
   templateUrl: './favorites.html',
   styleUrls: ['./favorites.css'],
 })

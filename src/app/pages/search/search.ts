@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { MovieService } from '../../core/services/movie-service';
 import { MovieCard } from '../../shared/components/movie-card/movie-card';
+import { Navbar } from '../../shared/components/navbar/navbar';
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [CommonModule, MovieCard],
+  imports: [CommonModule, MovieCard,Navbar],
   templateUrl: './search.html',
   styleUrls: ['./search.css'],
 })

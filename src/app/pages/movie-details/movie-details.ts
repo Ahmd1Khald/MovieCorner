@@ -6,11 +6,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MovieVideos } from '../../movie-videos/movie-videos';
+import { Navbar } from '../../shared/components/navbar/navbar';
 
 @Component({
   selector: 'app-movie-details',
   standalone: true,
-  imports: [CommonModule, RouterModule, MovieVideos],
+  imports: [CommonModule, RouterModule, MovieVideos,Navbar],
   templateUrl: './movie-details.html',
   styleUrls: ['./movie-details.css'],
 })
