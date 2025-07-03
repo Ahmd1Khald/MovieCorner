@@ -1,0 +1,18 @@
+<div class="container mt-3">
+  <h3>نتائج البحث عن "{{ query }}"</h3>
+
+  <div *ngIf="loading">جاري تحميل النتائج...</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <div *ngIf="!loading && results.length === 0" class="alert alert-warning">
+    لم يتم العثور على نتائج.
+  </div>
+
+  <div *ngIf="results.length > 0" class="row">
+<app-movie-card
+      *ngFor="let movie of results"
+      [movie]="movie"
+      class="col-md-4 mb-3"
+    ></app-movie-card>
+  </div>
+</div>

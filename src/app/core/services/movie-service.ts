@@ -24,4 +24,9 @@ export class MovieService {
       `${this.baseUrl}/movie/${id}/recommendations?api_key=${this.apiKey}`
     );
   }
+searchMovies(query: string, page: number = 1): Observable<any> {
+  return this.http.get(
+    `${this.baseUrl}/search/movie?api_key=${this.apiKey}&query=${encodeURIComponent(query)}&page=${page}`
+  );
+}
 }
