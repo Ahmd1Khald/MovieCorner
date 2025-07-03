@@ -1,10 +1,10 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 fixed-top shadow">
   <a class="navbar-brand fw-bold text-white" routerLink="/">🎬 MovieCorner</a>
 
-  <form class="d-flex mx-auto w-50">
-    <input #searchInput class="form-control me-2" type="search" placeholder="Search..." aria-label="Search" />
-    <button class="btn btn-outline-light" type="submit">🔍</button>
-  </form>
+<form class="d-flex mx-auto w-50" (submit)="onSearch($event, searchInput.value)">
+  <input #searchInput class="form-control me-2" type="search" placeholder="Search..." aria-label="Search" />
+  <button class="btn btn-outline-light" type="submit">🔍</button>
+</form>
 
   <div class="ms-auto d-flex align-items-center gap-3">
 
