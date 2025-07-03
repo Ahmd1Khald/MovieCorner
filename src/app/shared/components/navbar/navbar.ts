@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Renderer2  } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';import { FormsModule } from '@angular/forms';
 import { WishlistService } from '../../../core/services/wishlist';
@@ -17,13 +17,18 @@ export class Navbar implements OnInit {
   constructor(
     private wishlistService: WishlistService,
     private movieService: MovieService,
-    private router: Router
+    private router: Router,
+     private renderer: Renderer2,
+
   ) {}
+   currentLang: string = 'en';
 
   ngOnInit(): void {
     this.wishlistService.wishlistCount$.subscribe((count) => {
       this.wishlistCount = count;
     });
+        this.setDirection(this.currentLang);
+
   }
 
 onSearch(event: Event, query: string) {
@@ -37,4 +42,20 @@ onSearch(event: Event, query: string) {
 this.router.navigate(['/search'], { queryParams: { q: query } });
 
 }
+
+movies: any[] = [];
+
+onLanguageChange(lang: string) {
+  this.currentLang = lang;
+  this.setDirection(lang);
+  this.movieService.setLanguage(lang);
+}
+
+  setDirection(lang: string) {
+    if (lang === 'ar') {
+      this.renderer.setAttribute(document.body, 'dir', 'rtl');
+    } else {
+      this.renderer.setAttribute(document.body, 'dir', 'ltr');
+    }
+  }
 }
