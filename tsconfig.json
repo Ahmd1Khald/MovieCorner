@@ -29,6 +29,12 @@
     },
     {
       "path": "./tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/movie-corner/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/movie-corner/tsconfig.spec.json"
     }
   ]
 }

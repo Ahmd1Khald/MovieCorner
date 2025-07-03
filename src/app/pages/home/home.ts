@@ -2,10 +2,11 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MovieCard } from '../../shared/components/movie-card/movie-card';
 import { MovieService } from '../../core/services/movie-service';
 import { CommonModule } from '@angular/common';
+import { Navbar } from '../../shared/components/navbar/navbar';
 
 @Component({
   selector: 'app-home',
-  imports: [MovieCard, CommonModule],
+  imports: [MovieCard, CommonModule,Navbar],
   templateUrl: './home.html',
 styleUrls: ['./home.css']
 })
