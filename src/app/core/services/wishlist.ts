@@ -7,7 +7,6 @@ import { BehaviorSubject } from 'rxjs';
 export class WishlistService {
   private wishlistKey = 'favoriteMovies';
 
-  // 🎯 ده اللي بيتابعه الـ navbar
   wishlistCount$ = new BehaviorSubject<number>(this.getWishlistCount());
 
   constructor() {}
@@ -31,10 +30,15 @@ export class WishlistService {
     }
 
     localStorage.setItem(this.wishlistKey, JSON.stringify(list));
-    this.wishlistCount$.next(list.length); // ✅ نحدث العداد
+    this.wishlistCount$.next(list.length);
   }
 
   getWishlistCount(): number {
     return this.getWishlist().length;
   }
+
+  // لو حبيت تضيف تحديثات حسب اللغة (اختياري)
+  // setLanguage(lang: string) {
+  //   // ممكن تنفذ حاجة لو فيه حاجة مرتبطة بالعرض حسب اللغة
+  // }
 }

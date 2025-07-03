@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./register.css'],
   imports: [FormsModule, CommonModule]
 })
-export class RegisterComponent {
+export class Register {
   email = '';
   password = '';
   message = '';

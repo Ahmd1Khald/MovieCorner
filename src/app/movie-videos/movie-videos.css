@@ -1,0 +1,24 @@
+.no-videos {
+  color: #888;
+  font-size: 1.2rem;
+  text-align: center;
+  margin: 20px 0;
+  font-weight: 500;
+}
+
+.video-wrapper {
+  margin: 20px auto;
+  max-width: 600px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #121212;
+  color: white;
+  text-align: center;  /* يخلي النص داخل الفيديو في النص */
+}
+
+.video-title {
+  margin-bottom: 12px;
+  font-size: 1.4rem;
+  font-weight: 600;
+}

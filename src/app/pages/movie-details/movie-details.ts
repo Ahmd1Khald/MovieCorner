@@ -1,27 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MovieService } from '../../core/services/movie-service';
 import { WishlistService } from '../../core/services/wishlist';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { MovieVideos } from '../../movie-videos/movie-videos'; // استيراد الكومبوننت
 
 @Component({
   selector: 'app-movie-details',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, MovieVideos],
   templateUrl: './movie-details.html',
   styleUrls: ['./movie-details.css'],
 })
-export class MovieDetailsComponent implements OnInit {
+export class MovieDetailsComponent implements OnInit, OnDestroy {
   movie: any;
-  isLoading: boolean = true;
-  isFavorite: boolean = false;
-  movieId: number = 0;
-
-  // توصيات الفيلم
-  recommendations: any[] = [];
-  isLoadingRecommendations: boolean = false;
-
   constructor(
     private route: ActivatedRoute,
     private movieService: MovieService,
@@ -29,22 +23,35 @@ export class MovieDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.movieId = Number(this.route.snapshot.paramMap.get('id'));
-    this.loadMovieDetails();
-    this.loadRecommendations();
-  }
-
-  loadMovieDetails(): void {
-    this.movieService.getMovieDetails(this.movieId).subscribe({
-      next: (data) => {
         this.movie = data;
-        this.isLoading = false;
-        this.checkIfFavorite();
+
+        // بعدها نجيب الترجمات
+        if (this.transSub) this.transSub.unsubscribe();
+        this.transSub = this.movieService.getMovieTranslations(id).subscribe({
+          next: (translationsData: any) => {
+            const translation = translationsData.translations.find(
+              (t: any) => t.iso_639_1 === lang
+            );
+
+            if (translation) {
+              this.movie.translation = translation.data;
+            } else {
+              this.movie.translation = null;
+            }
+
+            this.isLoading = false;
+            this.checkIfFavorite();
+          },
+          error: () => {
+            this.movie.translation = null;
+            this.isLoading = false;
+            this.checkIfFavorite();
+          }
+        });
       },
-      error: (err) => {
-        console.error('Error fetching movie details:', err);
+      error: () => {
         this.isLoading = false;
-      },
+      }
     });
   }
 
@@ -71,21 +78,10 @@ export class MovieDetailsComponent implements OnInit {
     this.isFavorite = this.wishlistService.isInWishlist(this.movie.id);
   }
 
-  addRecommendationToFavorites(movie: any): void {
-    const stored = localStorage.getItem('favoriteMovies');
-    let favorites = stored ? JSON.parse(stored) : [];
-
-    const alreadyExists = favorites.some((fav: any) => fav.id === movie.id);
-    if (!alreadyExists) {
-      favorites.push(movie);
-      localStorage.setItem('favoriteMovies', JSON.stringify(favorites));
-      alert('Added to favorites!');
-    } else {
-      alert('This movie is already in favorites!');
-    }
+  ngOnDestroy(): void {
+    this.langSub?.unsubscribe();
+    this.transSub?.unsubscribe();
+    this.detailsSub?.unsubscribe();
   }
 
-  navigateToMovie(movieId: number): void {
-    window.location.href = `/movie/${movieId}`;
-  }
 }

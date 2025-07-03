@@ -50,24 +50,35 @@
         </div>
 
         <div class="action-buttons">
-          <button class="btn btn-primary">
-            <i class="icon-play"></i>
-            Watch Trailer
-          </button>
+
+
           <button (click)="toggleFavorite()" class="btn btn-outline-danger bg-dark">
             <i [ngClass]="isFavorite ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
           </button>
+                    <button (click)="showTrailer = true" class="btn btn-outline" *ngIf="!showTrailer">Trailer</button>
+
           <button class="btn btn-outline">
             <i class="icon-share"></i>
             Share
           </button>
+
         </div>
+<div class="text-center">
+  <div class="video-wrapper" *ngIf="showTrailer">
+    <app-movie-videos [movieId]="movie.id"></app-movie-videos>
+  </div>
+</div>
+
+
       </div>
     </div>
   </div>
 
-  <div class="content-section">
+
     <div class="container">
+  <div class="content-section">
+
+
       <div class="overview-section">
         <h2 class="section-title">Overview</h2>
         <p class="overview-text">{{ movie.overview }}</p>
